@@ -13,20 +13,26 @@ namespace RandomTextGenerator
         }
         public string GetRandomSentence(int wordCount)
         {
+	    /*
             string[] words = { "an", "automobile", "or", "motor", "car", "is", "a", "wheeled", "motor", "vehicle", "used", "for", "transporting", "passengers", "which", "also", "carries", "its", "own", "engine", "or" };
-            string[] sg_nouns = {"box", "block", "mug", "cup", "knife", "plate", "one"};
+	    */
+	    string[] sg_nouns = {"box", "block", "mug", "cup", "knife", "plate", "one"};
             string[] pl_nouns = {"blocks", "boxes", "mugs","cups","knives", "plates", "ones"};
             string[] sg_determiners = { "this", "that" };
             string[] sg_determiners = { "these", "those"};
-            string[] adjectives = { "yellow", "red", "blue", "purple", "green", "orange", "white", "gray", "black", "pink", "brown" };
-            string[] prepositions = { "on the left of", "on the right of", "to the left of", "to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
-                "beside", "before", "around",  "on top of", "in front of", "in back of", "on the front of", "on the back of"};
+            string[] adjectives = { "yellow", "red", "blue", "purple", "green", "orange", "white",
+		"gray", "black", "pink", "brown" };
+            string[] prepositions = { "on the left of", "on the right of", "to the left of",
+		"to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
+                "beside", "before", "around",  "on top of", "in front of", "in back of", "on the front of",
+		"on the back of"};
             string[] det_adj = { };
             string[] adj_no_det = { };
             List<string> det_no_adj = new List<string>();
             List<string> det_adj = new List<string>();
             List<string> adj_no_det = new List<string>();
-
+	    /*
+	    
             StringBuilder builder = new StringBuilder();
 
             for (int i = 0; i < wordCount; i++)
@@ -42,7 +48,7 @@ namespace RandomTextGenerator
 
             builder = new StringBuilder();
             builder.Append(sentence);
-
+	    */
             return builder.ToString();
         }
         public static void Main(string[] args)
