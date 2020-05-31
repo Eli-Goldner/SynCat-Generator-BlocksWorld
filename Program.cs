@@ -139,9 +139,9 @@ namespace SynCatGenerator
 		    }
 		}
 	    }
-	     NPs.AddRange(pl_det_no_adj);
-	     NPs.AddRange(sg_det_adj);
-	     NPs.AddRange(pl_det_adj);
+	     VPs.AddRange(intrans);
+	     VPs.AddRange(VP_trans_no_goal);
+	     VPs.AddRange(VP_trans_goal);
 	     return VPs;
 	}    
 	/*
