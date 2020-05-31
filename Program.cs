@@ -6,9 +6,31 @@ namespace SynCatGenerator
 {
     public class SynCat
     {
-        public SynCat()
-        {
-        }
+        public SynCat(){}
+	
+	public List<string> GetPPs()
+	{
+	    string[] prepositions = { "on the left of", "on the right of", "to the left of",
+				      "to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
+				      "beside", "before", "around",  "on top of", "in front of", "in back of", "on the front of",
+				      "on the back of"};
+	    List<string> PPs = new List<string>();
+	    List<string> NPs = GetNPs();
+	    //Only went down a depth of one since
+	    //Diana can't seem to handle
+	    //'the block to the left of the yellow block' 
+	    foreach (string p in prepositions)
+	    {
+		foreach (string np in NPs)
+		{
+		    StringBuilder builder = new StringBuilder();
+		    builder.Append(p).Append(" ").Append(np);
+		    PPs.Add(builder.ToString().Trim());
+		}
+	    }
+	    return PPs;
+	}
+	
         public List<string> GetNPs()
         {
 	    string[] sg_nouns = {"box", "block", "mug", "cup", "knife", "plate", "one"};
@@ -16,11 +38,7 @@ namespace SynCatGenerator
             string[] sg_determiners = { "this", "that", "the" };
             string[] pl_determiners = { "these", "those", "the"};
             string[] adjectives = { "yellow", "red", "blue", "purple", "green", "orange", "white",
-		"gray", "black", "pink", "brown" };
-            string[] prepositions = { "on the left of", "on the right of", "to the left of",
-		"to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
-                "beside", "before", "around",  "on top of", "in front of", "in back of", "on the front of",
-		"on the back of"};
+				    "gray", "black", "pink", "brown" };
             List<string> sg_det_no_adj = new List<string>();
 	    List<string> pl_det_no_adj = new List<string>();
             List<string> sg_det_adj = new List<string>();
@@ -81,10 +99,17 @@ namespace SynCatGenerator
 	    NPs.AddRange(pl_det_no_adj);
 	    NPs.AddRange(sg_det_adj);
 	    NPs.AddRange(pl_det_adj);
-	    NPs.AddRange(sg_adj_no_det);
-	    NPs.AddRange(pl_adj_no_det);
+	    //removing nouns without determiners since they didn't
+	    //come up in commands I could think of
+	    //NPs.AddRange(sg_adj_no_det);
+	    //NPs.AddRange(pl_adj_no_det);
 	    return NPs;
         }
+
+	public List<string> GetVPs()
+	{
+	}    
+	/*
         public static void Main(string[] args)
         {
             SynCat r = new SynCat();
@@ -93,5 +118,6 @@ namespace SynCatGenerator
 		Console.WriteLine(np);
 	    }
         }
+	*/
     }
 }
