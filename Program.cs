@@ -108,6 +108,41 @@ namespace SynCatGenerator
 
 	public List<string> GetVPs()
 	{
+	    string[] intrans =  {"nevermind", "wait"};
+	    string[] trans_no_goal[] = {"pick up", "lift", "grab", "grasp", "take"};
+	    string[] trans_goal = {"move", "put", "move", "push", "pull", "slide", "place"};
+	    List<string> PPs = GetPPs(); 
+	    List<string> NPs = GetNPs();
+	    List<string> VPs = new List<string>();
+	    List<string> VP_trans_no_goal = new List<string>();
+	    List<string> VP_trans_goal = new List<string>();
+
+	    foreach (string vtng in trans_no_goal)
+	    {
+		foreach (string np in NPs)
+		{
+		    StringBuilder builder = new StringBuilder();
+		    builder.Append(vtng).Append(" ").Append(np);
+		    VP_trans_no_goal.Add(builder.ToString().Trim());
+		}
+	    }
+
+	     foreach (string vtg in trans_goal)
+	    {
+		foreach (string np in NPs)
+		{
+		    foreach (string pp in PPs)
+		    {
+			StringBuilder builder = new StringBuilder();
+			builder.Append(vtg).Append(" ").Append(np)Append(" ").Append(pp);
+			VP_trans_no_goal.Add(builder.ToString().Trim());
+		    }
+		}
+	    }
+	     NPs.AddRange(pl_det_no_adj);
+	     NPs.AddRange(sg_det_adj);
+	     NPs.AddRange(pl_det_adj);
+	     return VPs;
 	}    
 	/*
         public static void Main(string[] args)
