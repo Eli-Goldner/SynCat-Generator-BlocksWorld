@@ -35,7 +35,7 @@ namespace SynCatGenerator
 	
         public List<string> GetNPs()
         {
-	    string[] sg_nouns = {"box", "block", "mug", "cup", "knife", "plate", "one"};
+	    string[] sg_nouns = {"block", "box", "mug", "cup", "knife", "plate", "one"};
             string[] pl_nouns = {"blocks", "boxes", "mugs","cups","knives", "plates", "ones"};
             string[] sg_determiners = { "this", "that", "the" };
             string[] pl_determiners = { "these", "those", "the"};
@@ -112,7 +112,7 @@ namespace SynCatGenerator
 	    //each be able to take an NP or PP
 	    string[] intrans =  {"nevermind", "wait"};
 	    string[] trans_no_goal = {"pick up", "lift", "grab", "grasp", "take"};
-	    string[] trans_goal = {"move", "put", "move", "push", "pull", "slide", "place"};
+	    string[] trans_goal = {"move", "put", "push", "pull", "slide", "place"};
 	    List<string> PPs = GetPPs(); 
 	    List<string> NPs = GetNPs();
 	    List<string> VPs = new List<string>();
@@ -146,5 +146,18 @@ namespace SynCatGenerator
 	     VPs.AddRange(VP_trans_goal);
 	     return VPs;
 	}    
+	
+	public static void Main(string[] args)
+	{
+	    //main is here just to check if
+	    //this can compile by itself
+	    /*
+	    SynCat r = new SynCat();
+	    foreach (string np in r.GetNPs())
+	    {
+		Console.WriteLine(np);
+	    }
+	    */
+	}
     }
 }
