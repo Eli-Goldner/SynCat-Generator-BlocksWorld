@@ -21,6 +21,8 @@ namespace SynCatGenerator
 	    //'the block to the left of the yellow block' 
 	    foreach (string p in prepositions)
 	    {
+		//to resolve - check to ensure NP
+		//begins with determiner prior to forming PP
 		foreach (string np in NPs)
 		{
 		    StringBuilder builder = new StringBuilder();
@@ -99,15 +101,15 @@ namespace SynCatGenerator
 	    NPs.AddRange(pl_det_no_adj);
 	    NPs.AddRange(sg_det_adj);
 	    NPs.AddRange(pl_det_adj);
-	    //removing nouns without determiners since they didn't
-	    //come up in commands I could think of
-	    //NPs.AddRange(sg_adj_no_det);
-	    //NPs.AddRange(pl_adj_no_det);
+	    NPs.AddRange(sg_adj_no_det);
+	    NPs.AddRange(pl_adj_no_det);
 	    return NPs;
         }
 
 	public List<string> GetVPs()
 	{
+	    //To resolve - 'nevermind' and 'wait' should
+	    //each be able to take an NP or PP
 	    string[] intrans =  {"nevermind", "wait"};
 	    string[] trans_no_goal = {"pick up", "lift", "grab", "grasp", "take"};
 	    string[] trans_goal = {"move", "put", "move", "push", "pull", "slide", "place"};
@@ -144,15 +146,5 @@ namespace SynCatGenerator
 	     VPs.AddRange(VP_trans_goal);
 	     return VPs;
 	}    
-	/*
-        public static void Main(string[] args)
-        {
-            SynCat r = new SynCat();
-	    foreach (string np in r.GetNPs())
-	    {
-		Console.WriteLine(np);
-	    }
-        }
-	*/
     }
 }
