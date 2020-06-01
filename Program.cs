@@ -6,14 +6,24 @@ namespace SynCatGenerator
 {
     public class SynCat
     {
-        public SynCat(){}
+	public List<string> sg_nouns = new List<string>(){"block", "box", "mug", "cup", "knife", "plate", "one"};
+	public List<string> pl_nouns = new List<string>(){"blocks", "boxes", "mugs","cups","knives", "plates", "ones"};
+	public List<string> sg_determiners = new List<string>(){ "this", "that", "the" };
+	public List<string> pl_determiners = new List<string>(){ "these", "those", "the"};
+	public List<string> adjectives = new List<string>(){ "yellow", "red", "blue", "purple", "green", "orange", "white",
+	    "gray", "black", "pink", "brown" };
+	public List<string> shift =  new List<string>(){"nevermind", "wait"};
+	public List<string> trans_no_goal = new List<string>(){"pick up", "lift", "grab", "grasp", "take"};
+	public List<string> trans_goal = new List<string>(){"move", "put", "push", "pull", "slide", "place"};
+	public List<string> prepositions = new List<string>(){ "on the left of", "on the right of", "to the left of",
+	    "to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
+	    "beside", "before", "around",  "on top of", "in front of", "in back of", "on the front of",
+	    "on the back of"};
+
+	public SynCat(){}
 	
 	public List<string> GetPPs()
 	{
-	    string[] prepositions = { "on the left of", "on the right of", "to the left of",
-				      "to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
-				      "beside", "before", "around",  "on top of", "in front of", "in back of", "on the front of",
-				      "on the back of"};
 	    List<string> PPs = new List<string>();
 	    List<string> NPs = GetNPs();
 	    //Only went down a depth of one since
@@ -21,13 +31,16 @@ namespace SynCatGenerator
 	    //'the block to the left of the yellow block' 
 	    foreach (string p in prepositions)
 	    {
-		//to resolve - check to ensure NP
-		//begins with determiner prior to forming PP
 		foreach (string np in NPs)
 		{
-		    StringBuilder builder = new StringBuilder();
-		    builder.Append(p).Append(" ").Append(np);
-		    PPs.Add(builder.ToString().Trim());
+		    string[] words = np.Split(' ');
+		    string first = words[0];
+		    if (sg_determiners.Contains(first) || pl_determiners.Contains(first))
+		    {
+			StringBuilder builder = new StringBuilder();
+			builder.Append(p).Append(" ").Append(np);
+			PPs.Add(builder.ToString().Trim());
+		    }
 		}
 	    }
 	    return PPs;
@@ -35,12 +48,6 @@ namespace SynCatGenerator
 	
         public List<string> GetNPs()
         {
-	    string[] sg_nouns = {"block", "box", "mug", "cup", "knife", "plate", "one"};
-            string[] pl_nouns = {"blocks", "boxes", "mugs","cups","knives", "plates", "ones"};
-            string[] sg_determiners = { "this", "that", "the" };
-            string[] pl_determiners = { "these", "those", "the"};
-            string[] adjectives = { "yellow", "red", "blue", "purple", "green", "orange", "white",
-				    "gray", "black", "pink", "brown" };
             List<string> sg_det_no_adj = new List<string>();
 	    List<string> pl_det_no_adj = new List<string>();
             List<string> sg_det_adj = new List<string>();
@@ -108,17 +115,14 @@ namespace SynCatGenerator
 
 	public List<string> GetVPs()
 	{
-	    //To resolve - 'nevermind' and 'wait' should
-	    //each be able to take an NP or PP
-	    string[] intrans =  {"nevermind", "wait"};
-	    string[] trans_no_goal = {"pick up", "lift", "grab", "grasp", "take"};
-	    string[] trans_goal = {"move", "put", "push", "pull", "slide", "place"};
 	    List<string> PPs = GetPPs(); 
 	    List<string> NPs = GetNPs();
 	    List<string> VPs = new List<string>();
 	    List<string> VP_trans_no_goal = new List<string>();
 	    List<string> VP_trans_goal = new List<string>();
-
+	    List<string> shift_theme = new List<string>();
+	    List<string> shift_goal = new List<string>();
+	    
 	    foreach (string vtng in trans_no_goal)
 	    {
 		foreach (string np in NPs)
@@ -128,8 +132,8 @@ namespace SynCatGenerator
 		    VP_trans_no_goal.Add(builder.ToString().Trim());
 		}
 	    }
-
-	     foreach (string vtg in trans_goal)
+	    
+	    foreach (string vtg in trans_goal)
 	    {
 		foreach (string np in NPs)
 		{
@@ -141,10 +145,36 @@ namespace SynCatGenerator
 		    }
 		}
 	    }
-	     VPs.AddRange(intrans);
-	     VPs.AddRange(VP_trans_no_goal);
-	     VPs.AddRange(VP_trans_goal);
-	     return VPs;
+	    
+	    foreach (string vs in shift)
+	    {
+		foreach (string np in NPs)
+		{
+		    // if we need to allow for things like
+		    // 'wait, red one' then we can remove the guard
+		    string[] words = np.Split(' ');
+		    string first = words[0];
+		    if (sg_determiners.Contains(first) || pl_determiners.Contains(first))
+		    {
+			StringBuilder builder = new StringBuilder();
+			builder.Append(vs).Append(" ").Append(np);
+			shift_theme.Add(builder.ToString().Trim());
+		    }
+		}
+
+		foreach (string pp in PPs)
+		{
+		    StringBuilder builder = new StringBuilder();
+		    builder.Append(vs).Append(" ").Append(pp);
+		    shift_goal.Add(builder.ToString().Trim());
+		}
+	    }
+	    VPs.AddRange(shift);
+	    VPs.AddRange(shift_theme);
+	    VPs.AddRange(shift_goal);
+	    VPs.AddRange(VP_trans_no_goal);
+	    VPs.AddRange(VP_trans_goal);
+	    return VPs;
 	}    
 	
 	public static void Main(string[] args)
