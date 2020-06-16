@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
@@ -26,17 +27,19 @@ namespace SynCatGenerator
         public List<string> partial_vps = new List<string>();
         public List<string> sg_partial_nps = new List<string>();
         public List<string> pl_partial_nps = new List<string>();
-        Transform getUserIntentObjectObj;
-        Transform getUserIntentLocationObj;
+        //Transform getUserIntentObjectObj;
+        //Transform getUserIntentLocationObj;
 
         public SynCat()
         {
+	    /*
             this.nps = GetNPs();
             this.pps = GetPPs();
             this.vps = GetVPs();
             this.partial_vps = VPsNeedGoal();
             this.sg_partial_nps = SgPartialNPs();
             this.pl_partial_nps = PlPartialNPs();
+	    */
         }
 
         public List<string> GetPPs()
@@ -241,7 +244,8 @@ namespace SynCatGenerator
             Debug.Log(string.Format("userIntentLocation = {0}", userIntentLocation));
             // if userIntentLocation is not (0,0,0), then there's an location on the blackboard
             // initializing otherwise VS complains in the conditionals
-            
+            */
+	    
             string syn_item = "";
     	    Vector3 loc = Vector3.zero;
             bool s_mod = false;
@@ -310,7 +314,7 @@ namespace SynCatGenerator
             }
 
             //default
-            */
+            
             List<string> nps = GetNPs();
             return nps;
         }
@@ -318,13 +322,13 @@ namespace SynCatGenerator
         {
             //main is here just to check if
             //this can compile by itself
-            /*
+            
             SynCat r = new SynCat();
-            foreach (string np in r.GetNPs())
+            foreach (string line in r.Predict())
             {
-            Console.WriteLine(np);
+            Console.WriteLine(line);
             }
-            */
+            
         }
     }
 }
