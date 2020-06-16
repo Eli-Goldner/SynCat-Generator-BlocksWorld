@@ -32,14 +32,11 @@ namespace SynCatGenerator
 
         public SynCat()
         {
-	    /*
-            this.nps = GetNPs();
-            this.pps = GetPPs();
-            this.vps = GetVPs();
+            //this.nps = GetNPs();
+            //this.pps = GetPPs();
             this.partial_vps = VPsNeedGoal();
-            this.sg_partial_nps = SgPartialNPs();
-            this.pl_partial_nps = PlPartialNPs();
-	    */
+            //this.sg_partial_nps = SgPartialNPs();
+            //this.pl_partial_nps = PlPartialNPs();
         }
 
         public List<string> GetPPs()
@@ -246,36 +243,21 @@ namespace SynCatGenerator
             // initializing otherwise VS complains in the conditionals
             */
 	    
-            string syn_item = "";
-    	    Vector3 loc = Vector3.zero;
-            bool s_mod = false;
-            bool l_mod = false;
-	        List<string> Predictions = new List<string>();
-	        for (int i = 0; i < args.Length; i++)
-	        {
-		        if (args[i] is String)
-		        {
-		            syn_item = (string)args[i];
-                    s_mod = true;
-		        }
-		        if (args[i] is Vector3)
-		        {
-		            loc = (Vector3)args[i];
-                    l_mod = true;
-		        }
-	        }
-            
-            
-
+            string syn_item = "nevermind";
+    	    //Vector3 loc = Vector3.zero;
+	    List<string> Predictions = new List<string>();
+	    bool s_mod = false;
+	    bool l_mod = false;
             // would rather use a switch statement but there 
             // did not seem to be a way that was clearer
             // or more efficient than the series of if-statements
             // below
+	    
             if (!s_mod)
             {
-                return this.nps;
+                return GetNPs();
             }
-
+	    
             // !l_mod reasoning:  if no location has been stored we need to bias for a PP
             // likewise if we've just seen a full or partial NP 
             // (since if there's no goal the speaker won't say anything)
@@ -284,9 +266,9 @@ namespace SynCatGenerator
                 sg_partial_nps.Any(m => m == syn_item) || 
                 pl_partial_nps.Any(m => m == syn_item))
             {
-                return this.pps;
+                return GetPPs();
             }
-
+	    
             // for shift verbs we want to bias towards a new object
             // or location
             if (shift.Any(m => m == syn_item))
@@ -314,9 +296,7 @@ namespace SynCatGenerator
             }
 
             //default
-            
-            List<string> nps = GetNPs();
-            return nps;
+            return GetNPs();
         }
         public static void Main(string[] args)
         {
