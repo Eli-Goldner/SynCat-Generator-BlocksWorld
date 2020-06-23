@@ -219,7 +219,7 @@ namespace SynCatGenerator
             return NPs;
         }
 
-	public HashSet<string> Predict()
+	public List<string> Predict()
         {
             /*
             // child of GoogleSR object that stores "user:intent:object"
@@ -244,7 +244,7 @@ namespace SynCatGenerator
 	    
             string syn_item = "_____";
     	    //Vector3 loc = Vector3.zero;
-	    HashSet<string> Predictions = new HashSet<string>();
+	    List<string> Predictions = new List<string>();
 	    bool s_mod = true;
 	    bool l_mod = true;
             // would rather use a switch statement but there 
@@ -254,7 +254,7 @@ namespace SynCatGenerator
 	    
             if (!s_mod)
             {
-                return this.nps;
+                return this.nps.ToList();
             }
 	    
             // !l_mod reasoning:  if no location has been stored we need to bias for a PP
@@ -265,15 +265,15 @@ namespace SynCatGenerator
                 sg_partial_nps.Contains(syn_item) || 
                 pl_partial_nps.Contains(syn_item))
             {
-                return this.pps;
+                return this.pps.ToList();
             }
 	    
             // for shift verbs we want to bias towards a new object
             // or location
             if (shift.Contains(syn_item))
             {
-                Predictions.UnionWith(this.nps);
-                Predictions.UnionWith(this.pps);
+                Predictions.AddRange(this.nps.ToList());
+                Predictions.AddRange(this.pps.ToList());
                 return Predictions;
             }
 
@@ -281,33 +281,29 @@ namespace SynCatGenerator
             // likewise for all P-heads
             if (trans_goal.Contains(syn_item) || trans_no_goal.Contains(syn_item) || prepositions.Contains(syn_item))
             {
-                return this.nps;
+                return this.nps.ToList();
             }
 
             if (sg_determiners.Contains(syn_item))
             {
-                return sg_partial_nps;
+                return sg_partial_nps.ToList();
             }
 
             if (pl_determiners.Contains(syn_item))
             {
-                return pl_partial_nps;
+                return pl_partial_nps.ToList();
             }
 
             //default
-            return this.nps;
+            return this.nps.ToList();
         }
-        public static void Main(string[] args)
+	public static void Main(string[] args)
         {
             //main is here just to check if
             //this can compile by itself
             
             SynCat r = new SynCat();
-            foreach (string line in r.Predict())
-            {
-            Console.WriteLine(line);
-            }
-            
-        }
+	    List<string> pred = r.Predict();
+	}
     }
 }

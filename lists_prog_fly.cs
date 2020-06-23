@@ -7,26 +7,26 @@ namespace SynCatGenerator
 {
     public class SynCat
     {
-        public HashSet<string> sg_nouns = new HashSet<string>() { "block", "box", "mug", "cup", "knife", "plate", "one" };
-        public HashSet<string> pl_nouns = new HashSet<string>() { "blocks", "boxes", "mugs", "cups", "knives", "plates", "ones" };
-        public HashSet<string> sg_determiners = new HashSet<string>() { "this", "that", "the" };
-        public HashSet<string> pl_determiners = new HashSet<string>() { "these", "those", "the" };
-        public HashSet<string> adjectives = new HashSet<string>(){ "yellow", "red", "blue", "purple", "green", "orange", "white",
+        public List<string> sg_nouns = new List<string>() { "block", "box", "mug", "cup", "knife", "plate", "one" };
+        public List<string> pl_nouns = new List<string>() { "blocks", "boxes", "mugs", "cups", "knives", "plates", "ones" };
+        public List<string> sg_determiners = new List<string>() { "this", "that", "the" };
+        public List<string> pl_determiners = new List<string>() { "these", "those", "the" };
+        public List<string> adjectives = new List<string>(){ "yellow", "red", "blue", "purple", "green", "orange", "white",
         "gray", "black", "pink", "brown" };
-        public HashSet<string> shift = new HashSet<string>() { "nevermind", "wait" };
-        public HashSet<string> trans_no_goal = new HashSet<string>() { "pick up", "lift", "grab", "grasp", "take" };
-        public HashSet<string> trans_goal = new HashSet<string>() { "move", "put", "push", "pull", "slide", "place" };
-        public HashSet<string> prepositions = new HashSet<string>(){ "on the left of", "on the right of", "to the left of",
+        public List<string> shift = new List<string>() { "nevermind", "wait" };
+        public List<string> trans_no_goal = new List<string>() { "pick up", "lift", "grab", "grasp", "take" };
+        public List<string> trans_goal = new List<string>() { "move", "put", "push", "pull", "slide", "place" };
+        public List<string> prepositions = new List<string>(){ "on the left of", "on the right of", "to the left of",
         "to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
         "beside", "before", "around",  "on top of", "in front of", "in back of", "on the front of",
         "on the back of"};
         //making lists static so multiple searches are quicker 
-        public HashSet<string> nps = new HashSet<string>();
-        public HashSet<string> pps = new HashSet<string>();
-        public HashSet<string> vps = new HashSet<string>();
-        public HashSet<string> partial_vps = new HashSet<string>();
-        public HashSet<string> sg_partial_nps = new HashSet<string>();
-        public HashSet<string> pl_partial_nps = new HashSet<string>();
+        public List<string> nps = new List<string>();
+        public List<string> pps = new List<string>();
+        public List<string> vps = new List<string>();
+        public List<string> partial_vps = new List<string>();
+        public List<string> sg_partial_nps = new List<string>();
+        public List<string> pl_partial_nps = new List<string>();
         //Transform getUserIntentObjectObj;
         //Transform getUserIntentLocationObj;
 
@@ -34,14 +34,15 @@ namespace SynCatGenerator
         {
 	    this.sg_partial_nps = SgPartialNPs();
             this.pl_partial_nps = PlPartialNPs();
-            this.nps = GetNPs(this.sg_partial_nps, this.pl_partial_nps);
-            this.pps = GetPPs(this.nps);
-            this.partial_vps = VPsNeedGoal(this.nps);
+            this.nps = GetNPs();
+            this.pps = GetPPs();
+            this.partial_vps = VPsNeedGoal();
         }
 
-        public HashSet<string> GetPPs(HashSet<string> NPs)
+        public List<string> GetPPs()
         {
-            HashSet<string> PPs = new HashSet<string>();
+	    List<string> NPs = GetNPs();
+            List<string> PPs = new List<string>();
             //Only went down a depth of one since
             //Diana can't seem to handle
             //'the block to the left of the yellow block' 
@@ -62,11 +63,13 @@ namespace SynCatGenerator
             return PPs;
         }
 
-        public HashSet<string> GetNPs(HashSet<string> sg_partials, HashSet<string> pl_partials)
+        public List<string> GetNPs()
         {
-            HashSet<string> sg_full = new HashSet<string>();
-            HashSet<string> pl_full = new HashSet<string>();
-            HashSet<string> NPs = new HashSet<string>();
+	    List<string> sg_partials = SgPartialNPs();
+	    List<string> pl_partials = PlPartialNPs();
+	    List<string> sg_full = new List<string>();
+            List<string> pl_full = new List<string>();
+            List<string> NPs = new List<string>();
 
 
             foreach (string sg_det in sg_determiners)
@@ -89,23 +92,23 @@ namespace SynCatGenerator
                 }
             }
 
-            NPs.UnionWith(sg_partials);
-            NPs.UnionWith(pl_partials);
-            NPs.UnionWith(sg_full);
-            NPs.UnionWith(pl_full);
+            NPs.AddRange(sg_partials);
+            NPs.AddRange(pl_partials);
+            NPs.AddRange(sg_full);
+            NPs.AddRange(pl_full);
             return NPs;
         }
 
 	/*
-        public HashSet<string> GetVPs()
+        public List<string> GetVPs()
         {
-            HashSet<string> PPs = GetPPs();
-            HashSet<string> NPs = GetNPs();
-            HashSet<string> VPs = new HashSet<string>();
-            HashSet<string> VP_trans_no_goal = new HashSet<string>();
-            HashSet<string> VP_trans_goal = new HashSet<string>();
-            HashSet<string> shift_theme = new HashSet<string>();
-            HashSet<string> shift_goal = new HashSet<string>();
+            List<string> PPs = GetPPs();
+            List<string> NPs = GetNPs();
+            List<string> VPs = new List<string>();
+            List<string> VP_trans_no_goal = new List<string>();
+            List<string> VP_trans_goal = new List<string>();
+            List<string> shift_theme = new List<string>();
+            List<string> shift_goal = new List<string>();
 
             foreach (string vtng in trans_no_goal)
             {
@@ -153,18 +156,19 @@ namespace SynCatGenerator
                     shift_goal.Add(builder.ToString().Trim());
                 }
             }
-            VPs.UnionWith(shift);
-            VPs.UnionWith(shift_theme);
-            VPs.UnionWith(shift_goal);
-            VPs.UnionWith(VP_trans_no_goal);
-            VPs.UnionWith(VP_trans_goal);
+            VPs.AddRange(shift);
+            VPs.AddRange(shift_theme);
+            VPs.AddRange(shift_goal);
+            VPs.AddRange(VP_trans_no_goal);
+            VPs.AddRange(VP_trans_goal);
             return VPs;
         }
 	*/
 	
-        public HashSet<string> VPsNeedGoal(HashSet<string> NPs)
+        public List<string> VPsNeedGoal()
         {
-            HashSet<string> VP_trans_goal = new HashSet<string>();
+	    List<string> NPs = GetNPs();
+            List<string> VP_trans_goal = new List<string>();
 
             foreach (string vtg in trans_goal)
             {
@@ -179,10 +183,10 @@ namespace SynCatGenerator
             return VP_trans_goal;
         }
 
-        public HashSet<string> SgPartialNPs()
+        public List<string> SgPartialNPs()
         {
-            HashSet<string> sg_adj_no_det = new HashSet<string>();
-            HashSet<string> NPs = new HashSet<string>();
+            List<string> sg_adj_no_det = new List<string>();
+            List<string> NPs = new List<string>();
 
             foreach (string adj in adjectives)
             {
@@ -194,15 +198,15 @@ namespace SynCatGenerator
                 }
             }
 
-            NPs.UnionWith(sg_nouns);
-            NPs.UnionWith(sg_adj_no_det);
+            NPs.AddRange(sg_nouns);
+            NPs.AddRange(sg_adj_no_det);
             return NPs;
         }
 
-        public HashSet<string> PlPartialNPs()
+        public List<string> PlPartialNPs()
         {
-            HashSet<string> pl_adj_no_det = new HashSet<string>();
-            HashSet<string> NPs = new HashSet<string>();
+            List<string> pl_adj_no_det = new List<string>();
+            List<string> NPs = new List<string>();
 
             foreach (string adj in adjectives)
             {
@@ -214,12 +218,12 @@ namespace SynCatGenerator
                 }
             }
 
-            NPs.UnionWith(pl_adj_no_det);
-            NPs.UnionWith(pl_nouns);
+            NPs.AddRange(pl_adj_no_det);
+            NPs.AddRange(pl_nouns);
             return NPs;
         }
 
-	public HashSet<string> Predict()
+	public List<string> Predict()
         {
             /*
             // child of GoogleSR object that stores "user:intent:object"
@@ -244,7 +248,7 @@ namespace SynCatGenerator
 	    
             string syn_item = "_____";
     	    //Vector3 loc = Vector3.zero;
-	    HashSet<string> Predictions = new HashSet<string>();
+	    List<string> Predictions = new List<string>();
 	    bool s_mod = true;
 	    bool l_mod = true;
             // would rather use a switch statement but there 
@@ -272,8 +276,8 @@ namespace SynCatGenerator
             // or location
             if (shift.Contains(syn_item))
             {
-                Predictions.UnionWith(this.nps);
-                Predictions.UnionWith(this.pps);
+                Predictions.AddRange(this.nps);
+                Predictions.AddRange(this.pps);
                 return Predictions;
             }
 
@@ -295,7 +299,7 @@ namespace SynCatGenerator
             }
 
             //default
-            return this.nps;
+            return this.nps.ToList();
         }
         public static void Main(string[] args)
         {
@@ -303,11 +307,7 @@ namespace SynCatGenerator
             //this can compile by itself
             
             SynCat r = new SynCat();
-            foreach (string line in r.Predict())
-            {
-            Console.WriteLine(line);
-            }
-            
-        }
+	    List<string> pred = r.Predict();
+	}
     }
 }
