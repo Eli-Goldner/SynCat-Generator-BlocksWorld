@@ -223,7 +223,7 @@ namespace SynCatGenerator
             return NPs;
         }
 
-	public List<string> Predict()
+	public List<string> Predict(string syn_item)
         {
             /*
             // child of GoogleSR object that stores "user:intent:object"
@@ -246,7 +246,6 @@ namespace SynCatGenerator
             // initializing otherwise VS complains in the conditionals
             */
 	    
-            string syn_item = "_____";
     	    //Vector3 loc = Vector3.zero;
 	    List<string> Predictions = new List<string>();
 	    bool s_mod = true;
@@ -301,13 +300,29 @@ namespace SynCatGenerator
             //default
             return this.nps.ToList();
         }
+
 	public static void Main(string[] args)
         {
             //main is here just to check if
             //this can compile by itself
-            
-            SynCat r = new SynCat();
-	    List<string> pred = r.Predict();
+	    Random rnd = new Random();
+	    SynCat r = new SynCat();
+	    int pv_idx = rnd.Next(r.partial_vps.Count);
+	    int pl_idx = rnd.Next(r.pl_partial_nps.Count);
+	    int tng_idx = rnd.Next(r.trans_no_goal.Count);
+	    int sgdet_idx = rnd.Next(r.sg_determiners.Count);
+	    int nps_idx = rnd.Next(r.nps.Count);
+	    List<string> tests = new List<string> {r.partial_vps.ToList()[pv_idx],
+		r.pl_partial_nps.ToList()[pl_idx],
+		r.trans_no_goal.ToList()[tng_idx],
+		r.sg_determiners.ToList()[sgdet_idx],
+		r.nps.ToList()[nps_idx],
+		"____NOT_A_SYNCAT____"};
+	    foreach (string elem in tests)
+	    {
+		//Console.WriteLine(elem);
+		r.Predict(elem);
+	    }
 	}
     }
 }
