@@ -29,15 +29,13 @@ namespace SynCatGenerator
 	    "green", "orange", "white", "gray", "black", "pink", "brown" };
         public HashSet<string> shift = new HashSet<string>() { "never mind", "wait" };
         public HashSet<string> trans_no_goal = new HashSet<string>() { "pick up", "lift", "grab", "grasp",
-	    "take", "go to", "grab", "grasp", "lift", "let go of", "ungrasp", "drop", "find"  };
+	    "take", "grab", "grasp", "lift", "let go of", "ungrasp", "drop" };
         public HashSet<string> trans_goal = new HashSet<string>() { "move", "put", "push", "pull", "slide",
 	    "place", "shift", "scoot", "servo", "slide", "bring" };
         public HashSet<string> prepositions = new HashSet<string>(){ "on the left of", "on the right of",
 	    "to the left of","to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
 	    "beside", "before", "around",  "on top of", "on the top of", "in front of", "in back of",
 	    "on the front of", "on the back of", "to the back of", "to back of", "next to"};
-	public HashSet<string> local_imperative = new HashSet<string>() { "go there", "go here", "go forward",
-	    "go back", "turn left", "turn right", "explore", "patrol", "stop"};
         //making lists static so multiple searches are quicker 
         public HashSet<string> nps = new HashSet<string>();
         public HashSet<string> pps = new HashSet<string>();
