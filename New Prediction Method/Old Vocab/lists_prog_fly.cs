@@ -322,7 +322,7 @@ namespace SynCatGenerator
 		r.nps.ToList()[nps_idx],
 		"____NOT_A_SYNCAT____",
 		""};
-	    List<string> shuffled = tests.OrderBy(item => rnd.Next()); 
+	    var shuffled = tests.OrderBy(item => rnd.Next()); 
 	    foreach (string elem in shuffled)
 	    {
 		//Console.WriteLine(elem);
