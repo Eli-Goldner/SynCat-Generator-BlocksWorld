@@ -1,0 +1,1 @@
+for run in {1..1000}; do (time mono hash_prog_fly.exe) >> hash_prog_fly 2>&1; done

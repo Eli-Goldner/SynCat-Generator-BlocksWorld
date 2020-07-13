@@ -29,15 +29,13 @@ namespace SynCatGenerator
 	    "green", "orange", "white", "gray", "black", "pink", "brown" };
         public HashSet<string> shift = new HashSet<string>() { "never mind", "wait" };
         public HashSet<string> trans_no_goal = new HashSet<string>() { "pick up", "lift", "grab", "grasp",
-	    "take", "go to", "grab", "grasp", "lift", "let go of", "ungrasp", "drop", "find"  };
+	    "take", "grab", "grasp", "lift", "let go of", "ungrasp", "drop" };
         public HashSet<string> trans_goal = new HashSet<string>() { "move", "put", "push", "pull", "slide",
 	    "place", "shift", "scoot", "servo", "slide", "bring" };
         public HashSet<string> prepositions = new HashSet<string>(){ "on the left of", "on the right of",
 	    "to the left of","to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
 	    "beside", "before", "around",  "on top of", "on the top of", "in front of", "in back of",
 	    "on the front of", "on the back of", "to the back of", "to back of", "next to"};
-	public HashSet<string> local_imperative = new HashSet<string>() { "go there", "go here", "go forward",
-	    "go back", "turn left", "turn right", "explore", "patrol", "stop"};
         //making lists static so multiple searches are quicker 
         public HashSet<string> nps = new HashSet<string>();
         public HashSet<string> pps = new HashSet<string>();
@@ -113,72 +111,6 @@ namespace SynCatGenerator
             NPs.UnionWith(pl_full);
             return NPs;
         }
-
-	/*
-        public HashSet<string> GetVPs()
-        {
-            HashSet<string> PPs = GetPPs();
-            HashSet<string> NPs = GetNPs();
-            HashSet<string> VPs = new HashSet<string>();
-            HashSet<string> VP_trans_no_goal = new HashSet<string>();
-            HashSet<string> VP_trans_goal = new HashSet<string>();
-            HashSet<string> shift_theme = new HashSet<string>();
-            HashSet<string> shift_goal = new HashSet<string>();
-
-            foreach (string vtng in trans_no_goal)
-            {
-                foreach (string np in NPs)
-                {
-                    StringBuilder builder = new StringBuilder();
-                    builder.Append(vtng).Append(" ").Append(np);
-                    VP_trans_no_goal.Add(builder.ToString().Trim());
-                }
-            }
-
-            foreach (string vtg in trans_goal)
-            {
-                foreach (string np in NPs)
-                {
-                    foreach (string pp in PPs)
-                    {
-                        StringBuilder builder = new StringBuilder();
-                        builder.Append(vtg).Append(" ").Append(np).Append(" ").Append(pp);
-                        VP_trans_goal.Add(builder.ToString().Trim());
-                    }
-                }
-            }
-
-            foreach (string vs in shift)
-            {
-                foreach (string np in NPs)
-                {
-                    // if we need to allow for things like
-                    // 'wait, red one' then we can remove the guard
-                    string[] words = np.Split(' ');
-                    string first = words[0];
-                    if (sg_determiners.Contains(first) || pl_determiners.Contains(first))
-                    {
-                        StringBuilder builder = new StringBuilder();
-                        builder.Append(vs).Append(" ").Append(np);
-                        shift_theme.Add(builder.ToString().Trim());
-                    }
-                }
-
-                foreach (string pp in PPs)
-                {
-                    StringBuilder builder = new StringBuilder();
-                    builder.Append(vs).Append(" ").Append(pp);
-                    shift_goal.Add(builder.ToString().Trim());
-                }
-            }
-            VPs.UnionWith(shift);
-            VPs.UnionWith(shift_theme);
-            VPs.UnionWith(shift_goal);
-            VPs.UnionWith(VP_trans_no_goal);
-            VPs.UnionWith(VP_trans_goal);
-            return VPs;
-        }
-	*/
 	
         public HashSet<string> VPsNeedGoal(HashSet<string> NPs)
         {

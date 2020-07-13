@@ -29,13 +29,15 @@ namespace SynCatGenerator
 	    "green", "orange", "white", "gray", "black", "pink", "brown" };
         public HashSet<string> shift = new HashSet<string>() { "never mind", "wait" };
         public HashSet<string> trans_no_goal = new HashSet<string>() { "pick up", "lift", "grab", "grasp",
-	    "take", "grab", "grasp", "lift", "let go of", "ungrasp", "drop" };
+	    "take", "go to", "grab", "grasp", "lift", "let go of", "ungrasp", "drop", "find"  };
         public HashSet<string> trans_goal = new HashSet<string>() { "move", "put", "push", "pull", "slide",
 	    "place", "shift", "scoot", "servo", "slide", "bring" };
         public HashSet<string> prepositions = new HashSet<string>(){ "on the left of", "on the right of",
 	    "to the left of","to the right of", "left of", "right of", "above", "below", "behind", "in", "on",
 	    "beside", "before", "around",  "on top of", "on the top of", "in front of", "in back of",
 	    "on the front of", "on the back of", "to the back of", "to back of", "next to"};
+	public HashSet<string> local_imperative = new HashSet<string>() { "go there", "go here", "go forward",
+	    "go back", "turn left", "turn right", "explore", "patrol", "stop"};
         //making lists static so multiple searches are quicker 
         public HashSet<string> nps = new HashSet<string>();
         public HashSet<string> pps = new HashSet<string>();
@@ -261,14 +263,42 @@ namespace SynCatGenerator
             
     	    //Vector3 loc = Vector3.zero;
 	    List<string> Predictions = new List<string>();
-	    bool s_mod = true;
-	    bool l_mod = true;
             // would rather use a switch statement but there 
             // did not seem to be a way that was clearer
             // or more efficient than the series of if-statements
             // below
 	    
-            if (!s_mod)
+            if (String.IsNullOrEmpty(syn_item))
+            {
+                Predictions.AddRange(this.nps.ToList());
+		Predictions.AddRange(this.partial_vps.ToList());
+		return Predictions;
+	    }
+
+	    // for shift verbs we want to bias towards a new object
+            // or location
+            if (this.shift.Contains(syn_item))
+            {
+                Predictions.AddRange(this.nps.ToList());
+                Predictions.AddRange(this.pps.ToList());
+                return Predictions;
+            }
+	    
+            if (this.sg_determiners.Contains(syn_item))
+            {
+                return sg_partial_nps.ToList();
+            }
+
+            if (this.pl_determiners.Contains(syn_item))
+            {
+                return pl_partial_nps.ToList();
+            }
+
+	    // all V-heads we're likely to deal with immediately subcat for an NP, 
+            // likewise for all P-heads
+            if (this.trans_goal.Contains(syn_item) ||
+		this.trans_no_goal.Contains(syn_item) ||
+		this.prepositions.Contains(syn_item))
             {
                 return this.nps.ToList();
             }
@@ -276,38 +306,12 @@ namespace SynCatGenerator
             // !l_mod reasoning:  if no location has been stored we need to bias for a PP
             // likewise if we've just seen a full or partial NP 
             // (since if there's no goal the speaker won't say anything)
-            if (!l_mod || partial_vps.Contains(syn_item) ||
-                nps.Contains(syn_item) || 
-                sg_partial_nps.Contains(syn_item) || 
-                pl_partial_nps.Contains(syn_item))
+            if (this.partial_vps.Contains(syn_item) ||
+                this.nps.Contains(syn_item) || 
+                this.sg_partial_nps.Contains(syn_item) || 
+                this.pl_partial_nps.Contains(syn_item))
             {
                 return this.pps.ToList();
-            }
-	    
-            // for shift verbs we want to bias towards a new object
-            // or location
-            if (shift.Contains(syn_item))
-            {
-                Predictions.AddRange(this.nps.ToList());
-                Predictions.AddRange(this.pps.ToList());
-                return Predictions;
-            }
-
-            // all V-heads we're likely to deal with immediately subcat for an NP, 
-            // likewise for all P-heads
-            if (trans_goal.Contains(syn_item) || trans_no_goal.Contains(syn_item) || prepositions.Contains(syn_item))
-            {
-                return this.nps.ToList();
-            }
-
-            if (sg_determiners.Contains(syn_item))
-            {
-                return sg_partial_nps.ToList();
-            }
-
-            if (pl_determiners.Contains(syn_item))
-            {
-                return pl_partial_nps.ToList();
             }
 
             //default
@@ -330,7 +334,9 @@ namespace SynCatGenerator
 		r.trans_no_goal.ToList()[tng_idx],
 		r.sg_determiners.ToList()[sgdet_idx],
 		r.nps.ToList()[nps_idx],
-		"____NOT_A_SYNCAT____"};
+		"____NOT_A_SYNCAT____",
+		""};
+	    List<string> shuffled = tests.OrderBy(item => rnd.Next()); 
 	    foreach (string elem in tests)
 	    {
 		//Console.WriteLine(elem);
