@@ -1,0 +1,5 @@
+Diana Vocab: minimum: 0.046, maximum: 0.083, average: 0.048, median: 0.048  
+Diana Vocab with Kirby Vocab: minimum: 0.046, maximum: 0.085, average: 0.049, median: 0.048
+
+There is a detectable difference in maximum, and average times (0.001 - 0.002 seconds)
+which is not likely to manifest in a detectable difference in perfomance in Unity
