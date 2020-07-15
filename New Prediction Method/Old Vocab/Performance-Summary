@@ -1,6 +1,6 @@
 Hash tables - Generated Where Needed: minimum: 0.039, maximum: 0.075, average: 0.042, median: 0.042
 Hash tables - Generated Dependently: minimum: 0.038, maximum: 0.078, average: 0.042, median: 0.041
-Lists - Generated Where Needed: minimum: 0.036, maximum: 0.071, average: 0.039, median: 0.038
+Lists - Generated Where Needed: minimum: 0.034, maximum: 0.073, average: 0.037, median: 0.036
 Lists - Generated Dependently: minimum: 0.035, maximum: 0.083, average: 0.039, median: 0.039
 
 Given using lists generated where needed (list_prog_fly.cs)resulted in the best median, average, and maximum times,
